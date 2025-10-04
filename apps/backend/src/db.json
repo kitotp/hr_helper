@@ -1,0 +1,43 @@
+{
+  "applications": [
+    {
+      "id": "1",
+      "name": "Ashley",
+      "email": "ashley@gmail.com",
+      "age": "19",
+      "cv": "cv.pdf",
+      "phoneNumber": "+34666222092",
+      "description": "My application."
+    },
+    {
+      "id": 1759598032762,
+      "name": "sf",
+      "email": "maison78901@gmail.com",
+      "age": 19,
+      "phone": "+681883888118",
+      "description": "sfg",
+      "created_at": 1759598032762
+    },
+    {
+      "id": 1759598055163,
+      "name": "fdfg",
+      "email": "dfg@gmail.com",
+      "age": 18,
+      "phone": "+14343433344",
+      "description": "rfdfge",
+      "created_at": 1759598055163
+    },
+    {
+      "id": 1759598160773,
+      "name": "fdfg",
+      "email": "dfg@gmail.com",
+      "age": 18,
+      "phone": "+14343433344",
+      "resume": {
+        "0": {}
+      },
+      "description": "rfdfge",
+      "created_at": 1759598160773
+    }
+  ]
+}

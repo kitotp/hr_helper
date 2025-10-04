@@ -21,6 +21,28 @@ app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
 })
 
+app.post('/submit', async (req ,res) => {
+    const post = {
+        id: Date.now(),
+        ...req.body,
+        created_at: Date.now()
+    }
+
+    const response = await fetch('http://localhost:2000/applications', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(post)
+    })
+    if (!response.ok) {
+        return res.status(500).json({ error: 'Failed to add record to db.json' })
+    }
+    
+    const data = await response.json()
+    res.json({ ok: true, message: 'Application saved', application: data })
+
+    
+})
+
 app.post('/admin/login', async (req, res) => {
     const envUser = String(process.env.ADMIN_USERNAME || '').trim()
     const envHash = String(process.env.ADMIN_PASS_HASH || '').trim()
