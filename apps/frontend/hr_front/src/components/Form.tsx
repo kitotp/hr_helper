@@ -14,18 +14,34 @@ const schema = z.object({
     description: z.string().optional()
 })
 
+type Post = {
+    name: string,
+    email: string,
+    age: string,
+    phone: string,
+    resume: string,
+    description: string
+}
+
 export default function Form(){
     const {register, control, handleSubmit, formState: {errors}} = useForm({
         resolver: zodResolver(schema)
     })
 
-    async function submitForm(){
+
+    async function submitForm(data: any){
+
         const res = await fetch('http://localhost:4000/submit', {
             method: "POST",
-            headers: {"Content-Type": "application/json"}
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(data as Post)
         })
-        const data = await res.json()
-        return data
+
+        if(!res.ok){
+            throw new Error('Error on logging')
+            return
+        }
+        
     }
 
     return(
@@ -48,7 +64,7 @@ export default function Form(){
                 </div>
                 <div className="flex flex-col">
                     <label className="text-[12px]">Phone number(optional)</label>
-                    <Controller control={control} name="resume" render={({field}) => (
+                    <Controller control={control} name="phone" render={({field}) => (
                         <PhoneInput {...field} defaultCountry="US" international className="w-full border border-gray-400/40 rounded-lg py-2 px-2 PhoneInput"/>
                     )} />
                     {errors.phone && <p className="text-red-600 text-[14px]">{errors.phone.message}</p>}
@@ -56,8 +72,8 @@ export default function Form(){
                 
                 <div className="flex flex-col">
                     <label className="text-[12px]">Upload resume *</label>
-                    <input type="file" className=" border border-dashed h-[200px] rounded-2xl"/>
-                    {errors.resume && <p className="text-red-600 text-[14px]">{errors.resume.message}</p>}
+                    <input type="file" className=" border border-dashed h-[200px] rounded-2xl" {...register('resume')}/>
+                    {typeof errors.resume?.message === 'string' && <p className="text-red-600 text-[14px]">{errors.resume.message}</p>}
                 </div>
                 <div className="flex flex-col">
                     <label className="text-[12px]">Description(optional)</label>
