@@ -19,13 +19,18 @@ export default function Form(){
         resolver: zodResolver(schema)
     })
 
+
     async function submitForm(){
         const res = await fetch('http://localhost:4000/submit', {
             method: "POST",
             headers: {"Content-Type": "application/json"}
         })
-        const data = await res.json()
-        return data
+
+        if(!res.ok){
+            throw new Error('Error on logging')
+            return
+        }
+        
     }
 
     return(
