@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { useAdmin } from "../context/AdminContext"
 
 export default function AdminLoginForm(){
 
@@ -7,6 +8,7 @@ export default function AdminLoginForm(){
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const {setAdmin} = useAdmin()
 
     async function submitForm(e){
         e.preventDefault()
@@ -23,6 +25,7 @@ export default function AdminLoginForm(){
             return
         }
 
+        setAdmin({username: username})
         navigate('/admin/dashboard');
     }
 

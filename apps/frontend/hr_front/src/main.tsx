@@ -3,8 +3,10 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
-import AdminLoginForm from './AdminLoginForm'
+import AdminLoginForm from './components/AdminLoginForm'
 import AdminPage from './AdminPage'
+import { AdminProvider } from './context/AdminContext'
+import RedirectIfAdmin from './components/RedirectIfAdmin'
 
 const router = createBrowserRouter([
   {
@@ -13,7 +15,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    element: <AdminLoginForm />
+    element: (
+      <RedirectIfAdmin>
+        <AdminLoginForm />
+      </RedirectIfAdmin>
+    )
   },
   {
     path: '/admin/dashboard',
@@ -23,6 +29,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AdminProvider>
+      <RouterProvider router={router} />
+    </AdminProvider>
   </StrictMode>,
 )
