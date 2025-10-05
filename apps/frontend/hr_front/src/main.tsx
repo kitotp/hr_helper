@@ -6,6 +6,7 @@ import App from './App'
 import AdminLoginForm from './components/AdminLoginForm'
 import AdminPage from './AdminPage'
 import { AdminProvider } from './context/AdminContext'
+import RedirectIfAdmin from './components/RedirectIfAdmin'
 
 const router = createBrowserRouter([
   {
@@ -14,7 +15,11 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    element: <AdminLoginForm />
+    element: (
+      <RedirectIfAdmin>
+        <AdminLoginForm />
+      </RedirectIfAdmin>
+    )
   },
   {
     path: '/admin/dashboard',
