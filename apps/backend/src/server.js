@@ -2,9 +2,11 @@ const express = require('express')
 const cors = require('cors')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const sgMail = require('@sendgrid/mail')
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
 
+sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const app = express()
 app.use(cors({
@@ -83,3 +85,17 @@ function auth(req, res , next){
         return res.status(401).json({ error: 'Invalid or expired token' })
     }
 }
+
+
+app.post('/send-test-email', async (req, res) => {
+    const msg = {
+        to: 'maison78901@gmail.com',
+        from: process.env.DEFAULT_FROM_EMAIL,
+        subject: 'New Apllication!',
+        text: 'New application was added.',
+        html: '<strong>New application was added.</strong>',
+    }
+
+    sgMail.send(msg)
+    console.log('sent!!')
+});

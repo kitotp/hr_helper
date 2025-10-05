@@ -24,7 +24,7 @@ type Post = {
 }
 
 export default function Form(){
-    const {register, control, handleSubmit, formState: {errors}} = useForm({
+    const {register, control, handleSubmit, formState: {errors}, reset} = useForm({
         resolver: zodResolver(schema)
     })
 
@@ -41,6 +41,18 @@ export default function Form(){
             throw new Error('Error on logging')
             return
         }
+
+        const res2 = await fetch('http://localhost:4000/send-test-email', {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+        })
+
+        if(!res2.ok){
+            throw new Error('Error on sending mail')
+            return
+        }
+
+        reset()
         
     }
 
