@@ -3,8 +3,9 @@ import { createRoot } from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App'
-import AdminLoginForm from './AdminLoginForm'
+import AdminLoginForm from './components/AdminLoginForm'
 import AdminPage from './AdminPage'
+import { AdminProvider } from './context/AdminContext'
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AdminProvider>
+      <RouterProvider router={router} />
+    </AdminProvider>
   </StrictMode>,
 )
