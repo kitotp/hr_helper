@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, type Dispatch, type PropsWithChildren, type SetStateAction } from "react";
+import { createContext, useContext, useEffect, useState, type Dispatch, type PropsWithChildren, type SetStateAction } from "react";
 
 type Admin = {
     username: string
@@ -12,9 +12,19 @@ type AdminContextType ={
 const AdminContext = createContext<AdminContextType | null>(null)
 
 
-
 export function AdminProvider({children}: PropsWithChildren){
-    const [admin, setAdmin] = useState<Admin | null>(null)
+    const [admin, setAdmin] = useState<Admin | null>(() => {
+        const stored = localStorage.getItem('admin')
+        return stored ? JSON.parse(stored) : null 
+    })
+
+    useEffect(() => {
+        if (admin){
+            localStorage.setItem('admin', JSON.stringify(admin))
+        }else {
+            localStorage.removeItem("admin");
+          }
+    }, [admin])
 
     return(
         <AdminContext.Provider value={{admin, setAdmin}}>
