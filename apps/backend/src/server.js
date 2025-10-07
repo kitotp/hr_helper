@@ -15,13 +15,10 @@ app.use(cors({
     origin: 'http://localhost:5173',
     credentials: true
 }))
-  
 app.use(express.json())
 app.use(cookieParser())
 
 const upload = multer({ storage: multer.memoryStorage() });
-
-
 const PORT = 4000
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
@@ -67,9 +64,17 @@ app.post('/submit',upload.single('resume'), async (req ,res) => {
         input: prompt
     })
 
-    console.log(analize.output_text)
+    const msg = {
+        to: 'maison78901@gmail.com',
+        from: process.env.DEFAULT_FROM_EMAIL,
+        subject: 'New Apllication!',
+        text: analize.output_text,
+    }
 
-    
+    sgMail.send(msg)
+    console.log('sent!!')
+
+    return res.json({ok: true})
 })
 
 app.post('/admin/login', async (req, res) => {
@@ -112,17 +117,3 @@ function auth(req, res , next){
         return res.status(401).json({ error: 'Invalid or expired token' })
     }
 }
-
-
-app.post('/send-test-email', async (req, res) => {
-    const msg = {
-        to: 'maison78901@gmail.com',
-        from: process.env.DEFAULT_FROM_EMAIL,
-        subject: 'New Apllication!',
-        text: 'New application was added.',
-        html: '<strong>New application was added.</strong>',
-    }
-
-    sgMail.send(msg)
-    console.log('sent!!')
-});
