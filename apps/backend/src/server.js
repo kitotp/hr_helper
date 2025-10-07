@@ -5,7 +5,9 @@ const jwt = require('jsonwebtoken')
 const sgMail = require('@sendgrid/mail')
 const cookieParser = require('cookie-parser')
 require('dotenv').config()
-
+const pdfParse = require('pdf-parse')
+const { default: OpenAI } = require('openai')
+const multer = require('multer')
 sgMail.setApiKey(process.env.SENDGRID_API_KEY)
 
 const app = express()
@@ -17,18 +19,36 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 
+const upload = multer({ storage: multer.memoryStorage() });
+
+
 const PORT = 4000
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
 
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
 })
 
-app.post('/submit', async (req ,res) => {
+app.post('/submit',upload.single('resume'), async (req ,res) => {
+
+    const {name, email , age, phone , description} = req.body
+    const file = req.file
+
+    if (!file) return res.status(400).json({ error: "resume is required" });
+
+    const parsed = await pdfParse(file.buffer)
+    const pdfText = parsed.text || ''
+
     const post = {
         id: Date.now(),
-        ...req.body,
-        created_at: Date.now()
-    }
+        created_at: new Date().toISOString(),
+        name,
+        email,
+        age: Number(age),
+        phone: phone || null,
+        description: description || null,
+      };
 
     const response = await fetch('http://localhost:2000/applications', {
         method: 'POST',
@@ -38,9 +58,16 @@ app.post('/submit', async (req ,res) => {
     if (!response.ok) {
         return res.status(500).json({ error: 'Failed to add record to db.json' })
     }
+
+    const prompt = `Analize the resume with the following demanded stack: React, 2 years of experience, Javascript ` +
+      `Return ONLY a rate from 0 to 10(10 - the best CV for the demanded stack) and the reason why you give this rate.\n\n` + pdfText;
     
-    const data = await response.json()
-    res.json({ ok: true, message: 'Application saved', application: data })
+    const analize = await openai.responses.create({
+        model: 'gpt-4o-mini',
+        input: prompt
+    })
+
+    console.log(analize.output_text)
 
     
 })
