@@ -1,20 +1,20 @@
-# 🤖 HR Helper  
+# HR Helper  
 **Automate your HR flow with AI.**  
 
 ---
 
-## 🚀 Features
+## Features
 
-- 📝 **Candidate Form** — simple and clean application form (customizable with admin pannel soon).  
-- 🧠 **AI Evaluation** — automatic resume analysis using AI.  
-- 📬 **Notifications** — instant email alerts for new relevant applications.  
-- 🛠️ **Admin Panel (coming soon)** — adjust required stack and experience levels.  
-- 🚫 **Auto-Reject (coming soon)** — candidates below a certain threshold are filtered out automatically.
+- **Candidate Form** — simple and clean application form (customizable with admin pannel soon).  
+- **AI Evaluation** — automatic resume analysis using AI.  
+- **Notifications** — instant email alerts for new relevant applications.  
+- **Admin Panel (coming soon)** — adjust required stack and experience levels.  
+- **Auto-Reject (coming soon)** — candidates below a certain threshold are filtered out automatically.
 
 ## Deploy
 coming soon.
 
-## 🧠 How It Works
+## How It Works
 
 1. A candidate submits a form with their resume (PDF).
 2. The backend parses the resume text using pdf-parse.
