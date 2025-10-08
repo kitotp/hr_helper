@@ -10,7 +10,8 @@ export type Application = {
     age: string,
     resume: string,
     description: string,
-    created_at:string
+    created_at:string,
+    status: string
 }
 
 export default function AdminPage(){
@@ -63,18 +64,18 @@ export default function AdminPage(){
                 <h1 className="text-black font-semibold text-[24px]">Settings</h1>
                 <input type="text" placeholder="Email" className="border border-black rounded-xl py-1 px-2"/>
 
-                <form onSubmit={handleSubmit(submitForm)}>
+                <form onSubmit={handleSubmit(submitForm)} className="flex flex-col">
                     <h1 className="text-2xl font-bold mt-5">AI Agent analizing parameters</h1>
                     <h2>Job you are looking for</h2>
-                    <input type="text" className="border border-black p-2" {...register('job')}/>
+                    <input placeholder="Ex. Frontend Engineer" type="text" className="border border-black p-2" {...register('job')}/>
 
                     <h2>Experience</h2>
-                    <input type="text" className="border border-black p-2" {...register('experience')}/>
+                    <input type="text" placeholder="Ex. 2 years" className="border border-black p-2" {...register('experience')}/>
 
                     <h2>Stack you are looking for</h2>
-                    <textarea className="border border-black p-2" {...register('stack')}/>
+                    <textarea placeholder="Ex. React, TypeScript, Redux ToolKit" className="border border-black p-2" {...register('stack')}/>
 
-                    <button type="submit" className="border border-black py-3 px-8 text-white rounded-lg bg-purple-500">Save</button>
+                    <button type="submit" className="border mt-5 self-center border-black py-3 px-8 text-white rounded-lg bg-purple-500">Save</button>
                 </form>
 
             </div>
