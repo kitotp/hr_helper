@@ -1,14 +1,12 @@
-const express = require('express')
-const cors = require('cors')
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
-const sgMail = require('@sendgrid/mail')
-const cookieParser = require('cookie-parser')
-require('dotenv').config()
-const pdfParse = require('pdf-parse')
-const { default: OpenAI } = require('openai')
-const multer = require('multer')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY)
+import express from 'express';
+import cors from 'cors';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
+import 'dotenv/config';
+import OpenAI from 'openai';
+import multer from 'multer';
+import { processApplication } from './services/processApplication.js';
 
 const app = express()
 app.use(cors({
@@ -34,9 +32,6 @@ app.post('/submit',upload.single('resume'), async (req ,res) => {
 
     if (!file) return res.status(400).json({ error: "resume is required" });
 
-    const parsed = await pdfParse(file.buffer)
-    const pdfText = parsed.text || ''
-
     const post = {
         id: Date.now(),
         created_at: new Date().toISOString(),
@@ -45,6 +40,7 @@ app.post('/submit',upload.single('resume'), async (req ,res) => {
         age: Number(age),
         phone: phone || null,
         description: description || null,
+        status: "received"
       };
 
     const response = await fetch('http://localhost:2000/applications', {
@@ -56,26 +52,11 @@ app.post('/submit',upload.single('resume'), async (req ,res) => {
         return res.status(500).json({ error: 'Failed to add record to db.json' })
     }
 
-    const prompt = `Analize the resume with the following demanded stack: React, 2 years of experience, Javascript ` +
-      `Return ONLY a rate from 0 to 10(10 - the best CV for the demanded stack) and the reason why you give this rate.\n\n` + pdfText;
-    
-    const analize = await openai.responses.create({
-        model: 'gpt-4o-mini',
-        input: prompt
-    })
+    res.status(202).json({ok: true})
 
-    const msg = {
-        to: 'maison78901@gmail.com',
-        from: process.env.DEFAULT_FROM_EMAIL,
-        subject: 'New Apllication!',
-        text: analize.output_text,
-    }
-
-    sgMail.send(msg)
-    console.log('sent!!')
-
-    return res.json({ok: true})
+    process.nextTick(() => processApplication({file}))
 })
+
 
 app.post('/admin/login', async (req, res) => {
     const envUser = String(process.env.ADMIN_USERNAME || '').trim()
@@ -117,3 +98,30 @@ function auth(req, res , next){
         return res.status(401).json({ error: 'Invalid or expired token' })
     }
 }
+
+app.post('/requirements', async(req, res) => {
+    const {job , experience, stack} = req.body
+
+    const result = await fetch('http://localhost:2000/requirements/1', {
+        method: "PATCH",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({job, experience, stack})
+    })
+
+    if(!result.ok){
+        return res.status(502).json({error: "Error on updating requirements"})
+    }
+
+    const data = await result.json()
+
+    return res.json(data)
+})
+
+app.get('/applications', async (req, res) => {
+    const result = await fetch('http://localhost:2000/applications', {
+        method: "GET"
+    })
+    if(!result.ok) throw new Error('error while getting applications')
+    const data = await result.json()
+    return res.json(data)
+})
