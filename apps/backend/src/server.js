@@ -7,6 +7,7 @@ import 'dotenv/config';
 import OpenAI from 'openai';
 import multer from 'multer';
 import { processApplication } from './services/processApplication.js';
+import { rejectApplication } from './services/rejectApplication.js';
 
 const app = express()
 app.use(cors({
@@ -141,5 +142,7 @@ app.patch(`/applications/:id/reject`, async (req , res) => {
 
     const updatedApplications = await result.json()
 
-    return res.json(updatedApplications)
+    res.status(202).json(updatedApplications)
+
+    process.nextTick(() => rejectApplication({email: 'maison78901@gmail.com'}))
 })
