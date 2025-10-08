@@ -13,6 +13,7 @@ export default function ApplicationCard({card}: Props){
                 <p>{card.created_at}</p>
             </div>
             <button className="border border-black bg-purple-400 text-white font-semibold px-2 py-1 ">Analize</button>
+            <button className="border border-black bg-red-400 text-white font-semibold px-2 py-1 ">Reject</button>
         </div>
     )
 }
