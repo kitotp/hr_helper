@@ -1,16 +1,17 @@
 import { useForm, Controller } from "react-hook-form";
-import z from "zod"
+import {z} from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
+import { useRef } from "react";
 
 
 const schema = z.object({
     name: z.string().min(2, 'Name must be at least 2 letters long.'),
-    email: z.email(),
+    email: z.string().email(),
     age: z.number().refine((v) => !Number.isNaN(v), {message: "Age is required."}).min(18,'You must be at least 18 years old').max(99, 'Maximum age is 99.'),
     phone: z.string().optional(),
-    resume: z.any().refine((files) => files && files?.length > 0, "CV is required."),
+    resume: z.custom<FileList>((v) => v instanceof FileList && v.length > 0, "CV is required."),
     description: z.string().optional()
 })
 
@@ -25,32 +26,26 @@ type Post = {
 
 export default function Form(){
     const {register, control, handleSubmit, formState: {errors}, reset} = useForm({
-        resolver: zodResolver(schema)
+        resolver: zodResolver(schema),
     })
 
 
     async function submitForm(data: any){
+        const fd = new FormData()
+
+        fd.append('name', data.name)
+        fd.append('email', data.email)
+        fd.append('age', String(data.age))
+        if (data.phone) fd.append('phone', data.phone)
+        if (data.description) fd.append('description',data.description)
+        
+        fd.append('resume', data.resume[0])         
 
         const res = await fetch('http://localhost:4000/submit', {
             method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data as Post)
+            body: fd
         })
-
-        if(!res.ok){
-            throw new Error('Error on logging')
-            return
-        }
-
-        const res2 = await fetch('http://localhost:4000/send-test-email', {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-        })
-
-        if(!res2.ok){
-            throw new Error('Error on sending mail')
-            return
-        }
+        if(!res.ok) throw new Error('error while submitting form')
 
         reset()
         
@@ -71,7 +66,7 @@ export default function Form(){
                 </div>
                 <div className="flex flex-col">
                     <label className="text-[12px]">Age *</label>
-                    <input className="w-full border border-gray-400/40 rounded-lg py-2 px-2"  {...register('age', {valueAsNumber: true})}/>
+                    <input type="number" className="w-full border border-gray-400/40 rounded-lg py-2 px-2"  {...register('age', {valueAsNumber: true})}/>
                     {errors.age && <p className="text-red-600 text-[14px]">{errors.age.message}</p>}
                 </div>
                 <div className="flex flex-col">
