@@ -18,7 +18,7 @@
       "age": 22,
       "phone": "+1234233334",
       "description": "f",
-      "status": "received"
+      "status": "rejected"
     },
     {
       "id": "1759911810817",
@@ -28,7 +28,7 @@
       "age": 22,
       "phone": "+123123333",
       "description": "g",
-      "status": "received"
+      "status": "rejected"
     },
     {
       "id": "1759911849472",
