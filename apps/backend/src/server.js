@@ -85,7 +85,7 @@ app.post('/admin/login', async (req, res) => {
     return res.json({ ok: true, message: 'Logged in successfully!' })
 })
 
-//middleware for protected routes
+
 function auth(req, res , next){
     const token = req.cookies?.access
     if (!token) return res.status(401).json({ error: 'No token' })
@@ -124,4 +124,22 @@ app.get('/applications', async (req, res) => {
     if(!result.ok) throw new Error('error while getting applications')
     const data = await result.json()
     return res.json(data)
+})
+
+app.patch(`/applications/:id/reject`, async (req , res) => {
+    const {id} = req.params
+
+    const result = await fetch(`http://localhost:2000/applications/${id}`, {
+        method: "PATCH",
+        headers: {"Content-Type": 'application/json'},
+        body: JSON.stringify({status: "rejected"})
+    })
+
+    if(!result.ok){
+        return res.status(500).json({error: "Error while rejecting candidate"})
+    }
+
+    const updatedApplications = await result.json()
+
+    return res.json(updatedApplications)
 })
