@@ -11,7 +11,7 @@ export type Application = {
     resume: string,
     description: string,
     created_at:string,
-    status: string
+    status: string,
 }
 
 export default function AdminPage(){
@@ -62,9 +62,10 @@ export default function AdminPage(){
             </div>
             <div className="w-[500px] h-[800px] border border-black py-3 px-3">
                 <h1 className="text-black font-semibold text-[24px]">Settings</h1>
-                <input type="text" placeholder="Email" className="border border-black rounded-xl py-1 px-2"/>
 
                 <form onSubmit={handleSubmit(submitForm)} className="flex flex-col">
+                    <input type="text" placeholder="Email" className="border border-black rounded-xl py-1 px-2" {...register('email')}/>
+                    <input type="text" placeholder="Company name" className="border border-black rounded-xl py-1 mt-2 px-2" {...register('company_name')}/>
                     <h1 className="text-2xl font-bold mt-5">AI Agent analizing parameters</h1>
                     <h2>Job you are looking for</h2>
                     <input placeholder="Ex. Frontend Engineer" type="text" className="border border-black p-2" {...register('job')}/>
