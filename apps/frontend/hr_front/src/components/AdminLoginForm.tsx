@@ -10,7 +10,7 @@ export default function AdminLoginForm(){
     const [password, setPassword] = useState('')
     const {setAdmin} = useAdmin()
 
-    async function submitForm(e){
+    async function submitForm(e: any){
         e.preventDefault()
 
         const res = await fetch('http://localhost:4000/admin/login', {
@@ -24,7 +24,6 @@ export default function AdminLoginForm(){
             throw new Error('Error while logging')
             return
         }
-
         setAdmin({username: username})
         navigate('/admin/dashboard');
     }
