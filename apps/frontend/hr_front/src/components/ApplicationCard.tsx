@@ -11,8 +11,11 @@ export default function ApplicationCard({card}: Props){
     const [status, setStatus] = useState(card.status)
     
     async function rejectCandidate(){
+
         const res = await fetch(`http://localhost:4000/applications/${card.id}/reject`, {
-            method: "PATCH"
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify({name: card.name})
         })
 
         const data = await res.json()

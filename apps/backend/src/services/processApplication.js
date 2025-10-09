@@ -13,7 +13,7 @@ export async function processApplication({ file }) {
   const pdfText = (parsed.text || '').slice(0, 30000);
 
   const r = await fetch('http://127.0.0.1:2000/requirements/1');
-  const { job, experience, stack } = await r.json();
+  const { email, job, experience, stack } = await r.json();
 
   const prompt =
     `Analyze the resume for Job: ${job}, Experience: ${experience}, Stack: ${stack}. ` +
@@ -22,8 +22,8 @@ export async function processApplication({ file }) {
   const ai = await openai.responses.create({ model: 'gpt-4o-mini', input: prompt });
 
   await sgMail.send({
-    to: 'maison78901@gmail.com',
-    from: process.env.DEFAULT_FROM_EMAIL,
+    to: email,
+    from: email,
     subject: 'New Application!',
     text: String(ai.output_text ?? '').trim(),
   });
