@@ -25,7 +25,6 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
 })
-
 app.post('/submit',upload.single('resume'), async (req ,res) => {
 
     const {name, email , age, phone , description} = req.body
@@ -34,7 +33,7 @@ app.post('/submit',upload.single('resume'), async (req ,res) => {
     if (!file) return res.status(400).json({ error: "resume is required" });
 
     const post = {
-        id: Date.now(),
+        id: String(Date.now()),
         created_at: new Date().toISOString(),
         name,
         email,
@@ -101,12 +100,12 @@ function auth(req, res , next){
 }
 
 app.post('/requirements', async(req, res) => {
-    const {job , experience, stack} = req.body
+    const {email, company_name ,job , experience, stack} = req.body
 
     const result = await fetch('http://localhost:2000/requirements/1', {
         method: "PATCH",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({job, experience, stack})
+        body: JSON.stringify({email, company_name, job, experience, stack})
     })
 
     if(!result.ok){
@@ -114,8 +113,16 @@ app.post('/requirements', async(req, res) => {
     }
 
     const data = await result.json()
-
     return res.json(data)
+})
+
+app.get('/getRejectData', async(req, res) => {
+    const result = await fetch('http://localhost:2000/requirements/1', {
+        method: "GET"
+    })
+    const data = await result.json()
+    
+    return res.json({company_name: data.company_name, position: data.job})
 })
 
 app.get('/applications', async (req, res) => {
@@ -129,6 +136,7 @@ app.get('/applications', async (req, res) => {
 
 app.patch(`/applications/:id/reject`, async (req , res) => {
     const {id} = req.params
+    const {name} = req.body
 
     const result = await fetch(`http://localhost:2000/applications/${id}`, {
         method: "PATCH",
@@ -144,5 +152,5 @@ app.patch(`/applications/:id/reject`, async (req , res) => {
 
     res.status(202).json(updatedApplications)
 
-    process.nextTick(() => rejectApplication({email: 'maison78901@gmail.com'}))
+    process.nextTick(() => rejectApplication({name: name, email: 'maison78901@gmail.com'}))
 })
