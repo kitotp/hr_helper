@@ -31,9 +31,9 @@ export default function AdminLoginForm(){
 
     return(
         <div className="h-screen bg-amber-200 flex flex-col items-center justify-center">
-            <form onSubmit={(e) => submitForm(e)} className="w-[300px] h-[400px] border border-black flex flex-col px-3 justify-center gap-3">
-                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Login" className="border border-black rounded-lg py-2"/>
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="border border-black rounded-lg py-2"/>
+            <form onSubmit={(e) => submitForm(e)} className="w-[300px] h-[400px] border border-black rounded-2xl flex flex-col px-3 justify-center gap-3">
+                <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Login" className=" px-2 border border-black rounded-lg py-2"/>
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" className="px-2 border border-black rounded-lg py-2"/>
                 <button type="submit" className="border border-black py-2 rounded-lg self-center px-7 bg-purple-500 text-white">Login</button>
             </form>
         </div>
