@@ -69,7 +69,10 @@ export default function Form(){
                 
                 <div className="flex flex-col">
                     <label className="text-[12px]">Upload resume *</label>
-                    <input type="file" className=" border border-dashed h-[200px] rounded-2xl" {...register('resume')}/>
+                    <input id="cv" type="file" className="hidden" {...register('resume')}/>
+                    <label htmlFor="cv" className="border border-dashed rounded-2xl h-[200px] border-gray-400 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition">
+                        <span className="text-gray-600">Click or drag CV here</span>  
+                    </label>
                     {typeof errors.resume?.message === 'string' && <p className="text-red-600 text-[14px]">{errors.resume.message}</p>}
                 </div>
                 <div className="flex flex-col">

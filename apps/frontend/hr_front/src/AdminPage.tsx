@@ -98,9 +98,11 @@ export default function AdminPage(){
 
     return(
         <div className="bg-yellow-200 h-screen flex flex-row items-center justify-center gap-8">
-            <div className="w-[500px] h-[800px] border border-black py-3 px-3 overflow-y-auto">
+            <div className="w-[500px] h-[800px] bg-white border border-black py-3 px-3 overflow-y-auto">
                 <h1 className="text-black font-semibold text-[24px]">Applications List of {admin?.username}</h1>
-                {applications.map((application: Application) => (<ApplicationCard key={application.id} card={application}/>))}
+                <div className="flex flex-col justify-center gap-2">
+                    {applications.map((application: Application) => (<ApplicationCard key={application.id} card={application}/>))}
+                </div>
             </div>
             <div className="w-[500px] h-[800px] border border-black py-3 px-3">
                 <h1 className="text-black font-semibold text-[24px]">Settings</h1>
