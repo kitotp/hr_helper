@@ -25,8 +25,10 @@ r.post('/login', async (req, res) => {
 
     const token = jwt.sign({sub: envUser, role: 'admin'},CONFIG.JWT_SECRET, {expiresIn: "15m"})
 
+    
     res.cookie('access', token, {
         httpOnly: true,
+        sameSite: 'lax',
         maxAge: 15 * 60 * 1000
     })
     return res.json({ ok: true, message: 'Logged in successfully!' })

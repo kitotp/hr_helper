@@ -24,7 +24,8 @@ export default function AdminPage(){
     useEffect(() => {
         async function fetchApplications(){
             const res = await fetch('http://localhost:4000/applications', {
-                method: "GET"
+                method: "GET",
+                credentials: 'include',
             })
             if(!res.ok) throw new Error('error while getting applications')
             const data = await res.json()
@@ -35,10 +36,16 @@ export default function AdminPage(){
     }, [])
 
     async function submitForm(data: any){
+
+        const changed = Object.fromEntries(
+            Object.entries(data).filter(([_, value]) => value !== "")
+        )
+
         const res = await fetch('http://localhost:4000/requirements', {
-            method: "POST",
+            method: "PATCH",
             headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(data)
+            credentials: 'include',
+            body: JSON.stringify(changed)
         })
 
         if(!res.ok){
