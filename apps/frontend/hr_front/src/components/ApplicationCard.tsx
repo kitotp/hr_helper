@@ -25,7 +25,7 @@ export default function ApplicationCard({card}: Props){
     }
 
     return(
-        <div className="border border-black h-[60px] flex flex-row items-center justify-between px-2">
+        <div className="border border-black h-[60px] bg-gray-200 flex flex-row items-center justify-between px-2">
             <div className="flex flex-col items-start justify-center">
                 <h1 className="font-semibold">{card.name}</h1>
                 <p className="text-[14px] text-gray-500">{date.toLocaleString()}</p>
