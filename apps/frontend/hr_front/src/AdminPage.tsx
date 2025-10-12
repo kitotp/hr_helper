@@ -14,12 +14,28 @@ export type Application = {
     status: string,
 }
 
+type Requirements = {
+    email: string,
+    company_name: string,
+    job: string,
+    experience: string,
+    stack: string
+}
+
 export default function AdminPage(){
 
     const [applications, setApplications] = useState([])
     const {admin} = useAdmin()
 
-    const {register, handleSubmit} = useForm()
+    const {register, handleSubmit, reset} = useForm<Requirements>({
+        defaultValues: {
+            email: "",
+            company_name: "",
+            job: "",
+            experience: "",
+            stack: "",
+        }
+    })
 
     useEffect(() => {
         async function fetchApplications(){
@@ -33,7 +49,26 @@ export default function AdminPage(){
         }
 
         fetchApplications()
+        getDefaultData()
     }, [])
+
+    async function getDefaultData(){
+        const res = await fetch('http://localhost:4000/getRequirements', {
+            method: "GET",
+            credentials: 'include',
+        })
+        if(!res.ok) throw new Error('error while getting applications')
+        const data: Partial<Requirements> = await res.json()
+        
+        reset({
+            email: data.email ?? "",
+            company_name: data.company_name ?? "",
+            job: data.job ?? "",
+            experience: data.experience ?? "",
+            stack: data.stack ?? "",
+
+        })
+    }
 
     async function submitForm(data: any){
 
