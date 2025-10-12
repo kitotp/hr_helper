@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { auth, requireAdmin } from "../middleware/auth"
+import { auth, requireAdmin } from "../middleware/auth.js"
 
 const r = Router()
 
@@ -32,6 +32,16 @@ r.get('/getRejectData', auth, requireAdmin, async(req, res) => {
     const data = await result.json()
     
     return res.json({company_name: data.company_name, position: data.job})
+})
+
+r.get('/getRequirements', auth , requireAdmin, async(req, res) => {
+    const result = await fetch('http://localhost:2000/requirements/1', {
+        method: "GET"
+    })
+
+    const data = await result.json()
+    
+    return res.json(data)
 })
 
 export default r
