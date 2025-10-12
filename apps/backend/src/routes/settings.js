@@ -1,14 +1,19 @@
 import { Router } from "express"
+import { auth, requireAdmin } from "../middleware/auth"
 
 const r = Router()
 
-r.post('/requirements', async(req, res) => {
-    const {email, company_name ,job , experience, stack} = req.body
+r.patch('/requirements', auth, requireAdmin, async(req, res) => {
+    const body = req.body
+
+    const payload = Object.fromEntries(
+        Object.entries(body).filter(([_,value]) => value !== undefined)
+    )
 
     const result = await fetch('http://localhost:2000/requirements/1', {
         method: "PATCH",
         headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email, company_name, job, experience, stack})
+        body: JSON.stringify(payload)
     })
 
     if(!result.ok){
@@ -19,7 +24,8 @@ r.post('/requirements', async(req, res) => {
     return res.json(data)
 })
 
-r.get('/getRejectData', async(req, res) => {
+
+r.get('/getRejectData', auth, requireAdmin, async(req, res) => {
     const result = await fetch('http://localhost:2000/requirements/1', {
         method: "GET"
     })

@@ -3,7 +3,6 @@ import {z} from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
-import { useRef } from "react";
 
 
 const schema = z.object({
@@ -14,15 +13,6 @@ const schema = z.object({
     resume: z.custom<FileList>((v) => v instanceof FileList && v.length > 0, "CV is required."),
     description: z.string().optional()
 })
-
-type Post = {
-    name: string,
-    email: string,
-    age: string,
-    phone: string,
-    resume: string,
-    description: string
-}
 
 export default function Form(){
     const {register, control, handleSubmit, formState: {errors}, reset} = useForm({
