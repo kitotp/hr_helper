@@ -7,6 +7,7 @@ import AdminLoginForm from './components/AdminLoginForm'
 import AdminPage from './AdminPage'
 import { AdminProvider } from './context/AdminContext'
 import RedirectIfAdmin from './components/RedirectIfAdmin'
+import RedirectIfNotLogined from './components/RedirectIfNotLogined'
 
 const router = createBrowserRouter([
   {
@@ -23,7 +24,10 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin/dashboard',
-    element: <AdminPage />
+    element: 
+    <RedirectIfNotLogined>
+      <AdminPage />
+    </RedirectIfNotLogined>
   }
 ])
 
