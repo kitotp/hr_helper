@@ -1,8 +1,10 @@
 import { Router } from "express"
+import { auth, requireAdmin } from "../middleware/auth.js"
+import {rejectApplication} from "../services/rejectApplication.js"
 
 const r = Router()
 
-r.get('/', async (req, res) => {
+r.get('/',auth, requireAdmin, async (_, res) => {
     const result = await fetch('http://localhost:2000/applications', {
         method: "GET"
     })
@@ -11,7 +13,7 @@ r.get('/', async (req, res) => {
     return res.json(data)
 })
 
-r.patch(`/:id/reject`, async (req , res) => {
+r.patch(`/:id/reject`, auth, requireAdmin, async (req , res) => {
     const {id} = req.params
     const {name} = req.body
 

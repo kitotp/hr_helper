@@ -15,15 +15,16 @@ export default function AdminLoginForm(){
 
         const res = await fetch('http://localhost:4000/admin/login', {
             method: "POST",
-            credentials: 'include',
+            credentials: 'include',  
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({username, password})
         })
 
         if(!res.ok){
             throw new Error('Error while logging')
-            return
         }
+
+
         setAdmin({username: username})
         navigate('/admin/dashboard');
     }
