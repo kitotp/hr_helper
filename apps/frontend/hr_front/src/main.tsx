@@ -2,17 +2,17 @@ import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import './index.css'
-import App from './App'
-import AdminLoginForm from './components/AdminLoginForm'
-import AdminPage from './AdminPage'
+import AdminLoginForm from './pages/AdminLoginPage'
+import AdminPage from './pages/AdminPage'
 import { AdminProvider } from './context/AdminContext'
 import RedirectIfAdmin from './components/RedirectIfAdmin'
 import RedirectIfNotLogined from './components/RedirectIfNotLogined'
+import FormPage from './pages/FormPage'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />
+    element: <FormPage />
   },
   {
     path: '/admin',

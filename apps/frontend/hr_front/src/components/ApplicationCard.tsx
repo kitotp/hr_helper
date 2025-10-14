@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Application } from "../AdminPage"
+import type { Application } from "../pages/AdminPage"
 
 type Props = {
     card: Application
@@ -32,7 +32,7 @@ export default function ApplicationCard({card}: Props){
             </div>
             <p className={`${status === "rejected" ? "text-red-500" : "text-blue-400"}`}>{status}</p>
             <button className="border border-black bg-purple-400 text-white font-semibold px-2 py-1 ">Analize</button>
-            <button onClick={() => rejectCandidate()} className="border border-black bg-red-400 text-white font-semibold px-2 py-1 ">Reject</button>
+            <button onClick={() => rejectCandidate()} className={`border border-black bg-red-400 text-white font-semibold px-2 py-1 ${status === "rejected" ? "hidden" : ""}`}>Reject</button>
         </div>
     )
 }

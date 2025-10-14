@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
-import ApplicationCard from "./components/ApplicationCard"
-import { useAdmin } from "./context/AdminContext"
+import ApplicationCard from "../components/ApplicationCard"
+import { useAdmin } from "../context/AdminContext"
 import { useForm } from "react-hook-form"
 
 export type Application = {
