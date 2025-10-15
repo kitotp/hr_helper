@@ -23,31 +23,19 @@ r.patch('/requirements', auth, requireAdmin, async (req, res) => {
             stack: payload.stack
         }
     })
+    if (!result) return res.status(404).json({ error: 'Requirements not found' });
 
-    if (!result.ok) {
-        return res.status(502).json({ error: "Error on updating requirements" })
-    }
-    return res.status(202).json({ ok: true })
-})
-
-
-r.get('/getRejectData', auth, requireAdmin, async (req, res) => {
-    const result = await fetch('http://localhost:2000/requirements/1', {
-        method: "GET"
-    })
-    const data = await result.json()
-
-    return res.json({ company_name: data.company_name, position: data.job })
+    return res.status(200).json({ ok: true })
 })
 
 r.get('/getRequirements', auth, requireAdmin, async (req, res) => {
-    const result = await fetch('http://localhost:2000/requirements/1', {
-        method: "GET"
+    const result = await prisma.requirements.findUnique({
+        where: {
+            id: "1"
+        }
     })
-
-    const data = await result.json()
-
-    return res.json(data)
+    if (!result) return res.status(404).json({ error: 'Requirements not found' });
+    return res.json(result)
 })
 
 export default r

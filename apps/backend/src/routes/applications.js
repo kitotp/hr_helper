@@ -14,19 +14,12 @@ r.patch(`/:id/reject`, auth, requireAdmin, async (req, res) => {
     const { id } = req.params
     const { name } = req.body
 
-    const result = await fetch(`http://localhost:2000/applications/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": 'application/json' },
-        body: JSON.stringify({ status: "rejected" })
+    const result = await prisma.applications.update({
+        where: { id },
+        data: { status: "rejected" }
     })
 
-    if (!result.ok) {
-        return res.status(500).json({ error: "Error while rejecting candidate" })
-    }
-
-    const updatedApplications = await result.json()
-
-    res.status(202).json(updatedApplications)
+    res.status(202).json(result)
 
     process.nextTick(() => rejectApplication({ name: name, email: 'maison78901@gmail.com' }))
 })
