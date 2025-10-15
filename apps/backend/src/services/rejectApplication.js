@@ -1,16 +1,13 @@
 import sgMail from '@sendgrid/mail';
+import { getRejectData } from './requirementServices.js';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export async function rejectApplication({name, email }) {
+export async function rejectApplication({ name, email }) {
 
-    const response = await fetch('http://localhost:4000/getRejectData', {
-        method: "GET"
-    })
+  const { company_name, position } = await getRejectData()
 
-    const {company_name, position} = await response.json()
-  
-    const rejectionText = `Hi ${name},
+  const rejectionText = `Hi ${name},
 
     Thank you for your interest in our company ${company_name}. We appreciate the time you took to apply for the ${position}.
 
@@ -20,13 +17,12 @@ export async function rejectApplication({name, email }) {
 
     Thank you,
     ${company_name} Recruiting Team`;
-  
-  
-    await sgMail.send({
-      to: email,
-      from: process.env.DEFAULT_FROM_EMAIL,
-      subject: 'Update on your Application',
-      text: rejectionText,
-    });
-  }
-  
+
+
+  await sgMail.send({
+    to: email,
+    from: process.env.DEFAULT_FROM_EMAIL,
+    subject: 'Update on your Application',
+    text: rejectionText,
+  });
+}
