@@ -2,3 +2,5 @@
 *.env
 apps/*/.env
 apps/**/.env
+/generated/prisma
+node_modules

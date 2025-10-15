@@ -19,10 +19,10 @@ app.use(cookieParser())
 
 const PORT = 4000
 
-app.use('/admin', authRoutes)
-app.use('/',auth, requireAdmin, settingsRoutes)
-app.use('/applications', auth, requireAdmin, applicationRoutes)
 app.use('/', uploadRoutes)
+app.use('/admin', authRoutes)
+app.use('/settings', auth, requireAdmin, settingsRoutes)
+app.use('/applications', auth, requireAdmin, applicationRoutes)
 
 
 app.listen(PORT, () => {
