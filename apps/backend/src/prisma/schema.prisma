@@ -1,0 +1,35 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+}
+
+model Applications {
+  id          String   @id @default(uuid())
+  created_at  DateTime @default(now())
+  name        String
+  email       String
+  age         Int
+  phone       String?
+  description String?
+  status      String
+}
+
+model Requirements {
+  id           String @id
+  email        String
+  company_name String
+  job          String
+  experience   String
+  stack        String
+}

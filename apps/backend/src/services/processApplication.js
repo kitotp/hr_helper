@@ -1,19 +1,27 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 
-const pdfParse = require('pdf-parse'); 
+const { PDFParse } = require('pdf-parse');
 import sgMail from '@sendgrid/mail';
 import OpenAI from 'openai';
+import { prisma } from '../prisma.js';
 
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 export async function processApplication({ file }) {
-  const parsed = await pdfParse(file.buffer);
+  const parser = new PDFParse({ data: file.buffer });
+
+  const parsed = await parser.getText()
   const pdfText = (parsed.text || '').slice(0, 30000);
 
-  const r = await fetch('http://127.0.0.1:2000/requirements/1');
-  const { email, job, experience, stack } = await r.json();
+  const req = await prisma.requirements.findUnique({
+    where: {
+      id: "1"
+    }
+  })
+
+  const { email, job, experience, stack } = req;
 
   const prompt =
     `Analyze the resume for Job: ${job}, Experience: ${experience}, Stack: ${stack}. ` +
