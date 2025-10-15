@@ -1,7 +1,6 @@
 {
   "name": "src",
   "version": "1.0.0",
-  "description": "",
   "main": "agent.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,5 +8,28 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@prisma/client": "^6.17.1",
+    "@sendgrid/mail": "^8.1.6",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "module": "^1.2.5",
+    "multer": "^2.0.2",
+    "openai": "^6.3.0",
+    "pdf-parse": "^2.3.5",
+    "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.7.2",
+    "nodemon": "^3.1.10",
+    "prisma": "^6.17.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.3"
+  }
 }
