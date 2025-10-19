@@ -11,7 +11,7 @@ import { auth, requireAdmin } from './middleware/auth.js';
 
 const app = express()
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: 'http://localhost:8080',
     credentials: true
 }))
 app.use(express.json())

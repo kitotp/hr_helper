@@ -1,0 +1,7 @@
+.git
+**/node_modules
+**/dist
+**/.DS_Store
+
+!apps/backend/package-lock.json
+!apps/frontend/hr_front/package-lock.json

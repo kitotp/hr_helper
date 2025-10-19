@@ -13,7 +13,7 @@ export default function AdminLoginForm(){
     async function submitForm(e: any){
         e.preventDefault()
 
-        const res = await fetch('http://localhost:4000/admin/login', {
+        const res = await fetch('/api/admin/login', {
             method: "POST",
             credentials: 'include',  
             headers: {"Content-Type": "application/json"},
