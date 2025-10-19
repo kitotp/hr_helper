@@ -3,7 +3,7 @@
 
 ---
 
-## Features
+## features
 
 - **Candidate Form** — simple and clean application form (customizable with admin pannel soon).  
 - **AI Evaluation** — automatic resume analysis using AI.  
@@ -11,8 +11,15 @@
 - **Admin Panel (coming soon)** — adjust required stack and experience levels.  
 - **Auto-Reject (coming soon)** — candidates below a certain threshold are filtered out automatically.
 
-## Deploy
-coming soon.
+## run locally with docker
+### prerequisites 
+install docker + docker compose 
+https://www.docker.com/products/docker-desktop/
+
+before deploying get to the Sendgrid sendgrid.com (used for sending mails) and get the API key, it will be necesary for automatization.
+
+
+
 
 ## How It Works
 
