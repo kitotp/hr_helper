@@ -22,9 +22,12 @@ you’ll need to generate a **SendGrid API key** in settings tab and add it to y
 
 ### setup instructions
 
-1. git clone https://github.com/kitotp/hr_helper
-2. cp apps/backend/.env.example apps/backend/.env
-3. docker compose up -d --build
+1. ```git clone https://github.com/kitotp/hr_helper```
+
+2. ```cp apps/backend/.env.example apps/backend/.env```
+
+3. ```docker compose up -d --build```
+
 
 
 
