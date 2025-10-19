@@ -14,9 +14,17 @@
 ## run locally with docker
 ### prerequisites 
 install docker + docker compose 
-https://www.docker.com/products/docker-desktop/
+- [Docker](https://www.docker.com/products/docker-desktop/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-before deploying get to the Sendgrid sendgrid.com (used for sending mails) and get the API key, it will be necesary for automatization.
+before deployment, create an account on [SendGrid](https://sendgrid.com/) — it’s used for sending automated emails.  
+you’ll need to generate a **SendGrid API key** in settings tab and add it to your environment file later.
+
+### setup instructions
+
+1. git clone https://github.com/kitotp/hr_helper
+2. cp apps/backend/.env.example apps/backend/.env
+3. docker compose up -d --build
 
 
 
