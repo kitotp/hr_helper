@@ -31,7 +31,7 @@ export default function Form(){
         
         fd.append('resume', data.resume[0])         
 
-        const res = await fetch('http://localhost:4000/submit', {
+        const res = await fetch('/api/submit', {
             method: "POST",
             body: fd
         })

@@ -12,7 +12,7 @@ export default function ApplicationCard({card}: Props){
     
     async function rejectCandidate(){
 
-        const res = await fetch(`http://localhost:4000/applications/${card.id}/reject`, {
+        const res = await fetch(`/api/applications/${card.id}/reject`, {
             method: "PATCH",
             headers: {"Content-Type": "application/json"},
             credentials: "include",
