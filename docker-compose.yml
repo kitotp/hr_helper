@@ -18,6 +18,7 @@ services:
       - db
     ports:
       - "3000:3000"
+      
 
   frontend:
     build: ./apps/frontend/hr_front

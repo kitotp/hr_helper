@@ -39,7 +39,7 @@ export default function AdminPage() {
 
     useEffect(() => {
         async function fetchApplications() {
-            const res = await fetch('http://localhost:4000/applications', {
+            const res = await fetch('/api/applications', {
                 method: "GET",
                 credentials: 'include',
             })
@@ -53,7 +53,7 @@ export default function AdminPage() {
     }, [])
 
     async function getDefaultData() {
-        const res = await fetch('http://localhost:4000/settings/getRequirements', {
+        const res = await fetch('/api/settings/getRequirements', {
             method: "GET",
             credentials: 'include',
         })
@@ -76,7 +76,7 @@ export default function AdminPage() {
             Object.entries(data).filter(([_, value]) => value !== "")
         )
 
-        const res = await fetch('http://localhost:4000/settings/requirements', {
+        const res = await fetch('/api/settings/requirements', {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
             credentials: 'include',

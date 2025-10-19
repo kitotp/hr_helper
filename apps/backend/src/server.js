@@ -17,7 +17,7 @@ app.use(cors({
 app.use(express.json())
 app.use(cookieParser())
 
-const PORT = 4000
+const PORT = 3000
 
 app.use('/', uploadRoutes)
 app.use('/admin', authRoutes)
