@@ -15,10 +15,20 @@ export async function processApplication({ file }) {
   const parsed = await parser.getText()
   const pdfText = (parsed.text || '').slice(0, 30000);
 
+  const defaults = {
+    id: '1',
+    email: process.env.ADMIN_EMAIL || 'admin@example.com',
+    job: 'Any position',
+    experience: 'any',
+    stack: 'general',
+  };
+
   const req = await prisma.requirements.findUnique({
     where: {
       id: "1"
-    }
+    },
+    update: {},
+    create: defaults
   })
 
   const { email, job, experience, stack } = req;
