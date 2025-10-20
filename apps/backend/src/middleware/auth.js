@@ -10,6 +10,7 @@ export function auth(req, res , next){
         req.user = payload
         next()
     }catch(e){
+        res.clearCookie('access')
         return res.status(401).json({ error: 'Invalid or expired token' })
     }
 }
