@@ -2,6 +2,7 @@ import {Router} from "express"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { CONFIG } from "../config/config.js"
+import { auth, requireAdmin } from "../middleware/auth.js"
 
 const r = Router()
 
@@ -29,9 +30,15 @@ r.post('/login', async (req, res) => {
     res.cookie('access', token, {
         httpOnly: true,
         sameSite: 'lax',
-        maxAge: 15 * 60 * 1000
+        maxAge: 15 * 60 * 1000,
+        secure: true
     })
     return res.json({ ok: true, message: 'Logged in successfully!' })
+})
+
+r.get('/session', auth, requireAdmin, (req, res) => {
+  const username = typeof req.user?.sub === 'string' ? req.user.sub : null
+  return res.json({ ok: true, username })
 })
 
 export default r
