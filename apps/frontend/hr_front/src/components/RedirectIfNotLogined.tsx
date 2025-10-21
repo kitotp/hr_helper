@@ -3,12 +3,16 @@ import { useAdmin } from "../context/AdminContext";
 import { Navigate } from "react-router-dom";
 
 export default function RedirectIfNotLogined({children}: PropsWithChildren){
-    const {admin} = useAdmin()
+    const {admin, isCheckingAuth} = useAdmin()
+
+    if (isCheckingAuth) {
+        return null
+    }
     
     if(!admin){
         return <Navigate to={'/admin'} replace/>
     }
 
-    return children
+    return <>{children}</>
 
 }

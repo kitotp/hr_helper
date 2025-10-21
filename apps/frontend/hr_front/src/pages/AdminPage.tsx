@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import ApplicationCard from "../components/ApplicationCard"
 import { useAdmin } from "../context/AdminContext"
 import { useForm } from "react-hook-form"
+import { useNavigate } from "react-router-dom"
+
 
 export type Application = {
     id: string,
@@ -25,7 +27,13 @@ type Requirements = {
 export default function AdminPage() {
 
     const [applications, setApplications] = useState([])
-    const { admin } = useAdmin()
+    const { admin, setAdmin } = useAdmin()
+    const navigate = useNavigate()
+
+    const handleUnauthorized = useCallback(() => {
+        setAdmin(null)
+        navigate('/admin', { replace: true })
+    }, [navigate, setAdmin])
 
     const { register, handleSubmit, reset } = useForm<Requirements>({
         defaultValues: {
@@ -39,24 +47,41 @@ export default function AdminPage() {
 
     useEffect(() => {
         async function fetchApplications() {
-            const res = await fetch('/api/applications', {
-                method: "GET",
-                credentials: 'include',
-            })
-            if (!res.ok) throw new Error('error while getting applications')
-            const data = await res.json()
-            setApplications(data)
+            try {
+                const res = await fetch('/api/applications', {
+                    method: "GET",
+                    credentials: 'include',
+                })
+
+                if (res.status === 401) {
+                    handleUnauthorized()
+                    return
+                }
+
+                if (!res.ok) throw new Error('error while getting applications')
+                const data = await res.json()
+                setApplications(data)
+            } catch (error) {
+                console.error(error)
+            }
         }
 
         fetchApplications()
         getDefaultData()
-    }, [])
+    }, [handleUnauthorized])
+
 
     async function getDefaultData() {
         const res = await fetch('/api/settings/getRequirements', {
             method: "GET",
             credentials: 'include',
         })
+
+        if (res.status === 401) {
+            handleUnauthorized()
+            return
+        }
+
         if (!res.ok) throw new Error('error while getting applications')
         const data: Partial<Requirements> = await res.json()
 
@@ -76,22 +101,31 @@ export default function AdminPage() {
             Object.entries(data).filter(([_, value]) => value !== "")
         )
 
-        const res = await fetch('/api/settings/requirements', {
-            method: "PATCH",
-            headers: { "Content-Type": "application/json" },
-            credentials: 'include',
-            body: JSON.stringify(changed)
-        })
+        try {
+            const res = await fetch('/api/settings/requirements', {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                credentials: 'include',
+                body: JSON.stringify(changed)
+            })
 
-        if (!res.ok) {
-            throw new Error('Error while updating requirements')
+            if (res.status === 401) {
+                handleUnauthorized()
+                return
+            }
+
+            if (!res.ok) {
+                throw new Error('Error while updating requirements')
+            }
+
+            const dataRes = await res.json()
+            return dataRes
+        }catch (error) {
+            console.error(error)
         }
-
-        const dataRes = await res.json()
-
-
-        return dataRes
+        
     }
+
 
 
 
